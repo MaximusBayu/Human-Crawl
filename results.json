@@ -1,0 +1,105 @@
+[
+  {
+    "crawler": "naive_requests",
+    "pages_ok": 0,
+    "blocked_at": 1,
+    "reason": "L1: User-Agent mengandung 'python-requests'; L1: tidak ada Accept-Language; L1: tidak ada header Sec-Fetch-* (bukan browser modern); L2: JS challenge tidak dijalankan (cookie js_ok tidak ada)",
+    "risk_score": 27,
+    "all_flags": [
+      "L1: User-Agent mengandung 'python-requests'",
+      "L1: tidak ada Accept-Language",
+      "L1: tidak ada header Sec-Fetch-* (bukan browser modern)",
+      "L2: JS challenge tidak dijalankan (cookie js_ok tidak ada)"
+    ],
+    "seconds": 0.0
+  },
+  {
+    "crawler": "naive_headless",
+    "pages_ok": 0,
+    "blocked_at": 1,
+    "reason": "L1: User-Agent mengandung 'headlesschrome'; L2: JS challenge tidak dijalankan (cookie js_ok tidak ada)",
+    "risk_score": 20,
+    "all_flags": [
+      "L1: User-Agent mengandung 'headlesschrome'",
+      "L2: JS challenge tidak dijalankan (cookie js_ok tidak ada)"
+    ],
+    "seconds": 1.5
+  },
+  {
+    "crawler": "stealth_fp_only",
+    "pages_ok": 3,
+    "blocked_at": 4,
+    "reason": "L3: tidak ada interaksi mouse/scroll di halaman 1; L3: tidak ada interaksi mouse/scroll di halaman 2; L3: tidak ada interaksi mouse/scroll di halaman 3",
+    "items_collected": 15,
+    "sample": [
+      "Produk 1-1 — Rp8,000",
+      "Produk 1-2 — Rp9,000",
+      "Produk 1-3 — Rp10,000"
+    ],
+    "risk_score": 12,
+    "all_flags": [
+      "L3: tidak ada interaksi mouse/scroll di halaman 1",
+      "L3: tidak ada interaksi mouse/scroll di halaman 2",
+      "L3: tidak ada interaksi mouse/scroll di halaman 3"
+    ],
+    "seconds": 2.4
+  },
+  {
+    "crawler": "stealth_behaviour_only",
+    "pages_ok": 0,
+    "blocked_at": "beranda",
+    "reason": "L1: User-Agent mengandung 'headlesschrome'",
+    "items_collected": 0,
+    "sample": [],
+    "risk_score": 10,
+    "all_flags": [
+      "L1: User-Agent mengandung 'headlesschrome'"
+    ],
+    "seconds": 0.7
+  },
+  {
+    "crawler": "stealth_full",
+    "pages_ok": 15,
+    "blocked_at": null,
+    "reason": "",
+    "items_collected": 75,
+    "sample": [
+      "Produk 1-1 — Rp8,000",
+      "Produk 1-2 — Rp9,000",
+      "Produk 1-3 — Rp10,000"
+    ],
+    "risk_score": 0,
+    "all_flags": [],
+    "seconds": 134.7
+  },
+  {
+    "crawler": "stealth_full",
+    "pages_ok": 15,
+    "blocked_at": null,
+    "reason": "",
+    "items_collected": 75,
+    "sample": [
+      "Produk 1-1 — Rp8,000",
+      "Produk 1-2 — Rp9,000",
+      "Produk 1-3 — Rp10,000"
+    ],
+    "risk_score": 0,
+    "all_flags": [],
+    "seconds": 161.4
+  },
+  {
+    "crawler": "stealth_full",
+    "pages_ok": 15,
+    "blocked_at": null,
+    "reason": "",
+    "items_collected": 75,
+    "sample": [
+      "Produk 1-1 — Rp8,000",
+      "Produk 1-2 — Rp9,000",
+      "Produk 1-3 — Rp10,000"
+    ],
+    "risk_score": 0,
+    "all_flags": [],
+    "seconds": 155.2
+  }
+]

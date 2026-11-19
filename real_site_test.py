@@ -39,7 +39,6 @@ from browser import launch  # noqa: E402
 # Halaman deteksi bot publik yang memang untuk pengujian (dipakai jika tanpa --url)
 DETECTOR_SITES = [
     ("sannysoft", "https://bot.sannysoft.com/"),
-    ("areyouheadless", "https://arh.antoinevastel.com/bots/areyouheadless"),
     ("botd", "https://fingerprintjs.github.io/BotD/main/"),
 ]
 

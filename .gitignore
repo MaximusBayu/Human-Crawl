@@ -4,3 +4,4 @@ __pycache__/
 venv/
 screenshots/
 real_results.*
+data_*.csv

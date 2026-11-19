@@ -31,7 +31,11 @@ BAD_UA_TOKENS = ["python-requests", "curl", "wget", "scrapy", "httpx",
 # state per sesi
 SESS = defaultdict(lambda: {"score": 0, "reasons": [], "times": [],
                             "interacted": set(), "fp_ok": False,
-                            "blocked": False, "pages": 0})
+                            "blocked": False, "pages": 0,
+                            # Sinyal LANJUTAN: diukur, TIDAK dihitung ke skor blokir.
+                            # Dipakai sebagai kontrol agar lab tidak hanya menguji
+                            # sinyal yang bisa dikalahkan HumanCrawl.
+                            "adv_automation": False, "adv_reason": ""})
 
 
 def sid():
@@ -100,6 +104,14 @@ PAGE_JS = """
     outerW: window.outerWidth, outerH: window.outerHeight,
     hwc: navigator.hardwareConcurrency || 0
   };
+  // Sinyal lanjutan: renderer WebGL. Headless/VM memakai software rendering
+  // (SwiftShader / llvmpipe), bukan GPU asli. HumanCrawl tidak menyamarkan ini.
+  try {
+    var cv = document.createElement('canvas');
+    var gl = cv.getContext('webgl') || cv.getContext('experimental-webgl');
+    var dbg = gl.getExtension('WEBGL_debug_renderer_info');
+    fp.webglRenderer = dbg ? gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) : '';
+  } catch (e) { fp.webglRenderer = ''; }
   fetch('/fp', {method:'POST', headers:{'Content-Type':'application/json'},
                 body: JSON.stringify(fp), credentials:'same-origin'})
     .then(function(){ document.cookie = 'js_ok=1; path=/'; });
@@ -204,6 +216,13 @@ def fp():
     # inkonsistensi UA HTTP vs UA JavaScript (Vastel et al. FP-Scanner)
     if d.get("ua") and d.get("ua") != request.headers.get("User-Agent"):
         flag(s, 5, "L2: UA HTTP != UA JavaScript (inkonsisten)")
+    # SINYAL LANJUTAN (tidak dihitung ke skor): software rendering = indikasi
+    # headless/VM. Ini sinyal yang TIDAK ditangani HumanCrawl, dipakai sebagai
+    # kontrol bias; sejalan dengan deteksi otomasi oleh detektor kelas industri.
+    renderer = str(d.get("webglRenderer", "")).lower()
+    if any(t in renderer for t in ("swiftshader", "llvmpipe", "software")):
+        s["adv_automation"] = True
+        s["adv_reason"] = "renderer WebGL = software rendering (indikasi headless/VM)"
     s["fp_ok"] = True
     return jsonify(ok=True)
 

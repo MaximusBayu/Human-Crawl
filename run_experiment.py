@@ -50,6 +50,9 @@ def main():
             main_s = max(st.values(), key=lambda v: (v["pages"], v["score"])) if st else {}
             r["risk_score"] = main_s.get("score", 0)
             r["all_flags"] = main_s.get("reasons", [])
+            # sinyal lanjutan (tidak dihitung ke skor blokir)
+            adv = any(v.get("adv_automation") for v in st.values()) if st else False
+            r["adv_automation"] = adv
         finally:
             srv.terminate()
         r["seconds"] = round(time.time() - t0, 1)
@@ -59,11 +62,13 @@ def main():
     with open(os.path.join(HERE, "results.json"), "w") as f:
         json.dump(results, f, indent=2, ensure_ascii=False)
     with open(os.path.join(HERE, "results.md"), "w") as f:
-        f.write("| Crawler | Halaman berhasil (dari 15) | Diblokir di halaman | Skor risiko | Alasan deteksi | Waktu (dtk) |\n")
-        f.write("|---|---|---|---|---|---|\n")
+        f.write("| Crawler | Halaman berhasil (dari 15) | Diblokir di halaman | Skor risiko | "
+                "Sinyal lanjutan (WebGL) | Alasan deteksi | Waktu (dtk) |\n")
+        f.write("|---|---|---|---|---|---|---|\n")
         for r in results:
+            adv = "TERDETEKSI" if r.get("adv_automation") else "-"
             f.write(f"| {r['crawler']} | {r['pages_ok']} | {r['blocked_at'] or '-'} | {r['risk_score']} | "
-                    f"{r['reason'] or '-'} | {r['seconds']} |\n")
+                    f"{adv} | {r['reason'] or '-'} | {r['seconds']} |\n")
 
 
 if __name__ == "__main__":

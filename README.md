@@ -13,17 +13,18 @@ results.json / results.md    hasil akhir
 results_iterasi1.*           hasil iterasi 1 (sebelum perbaikan modul M5)
 ```
 
-## Menjalankan
+## Menjalankan (Windows / macOS / Linux)
 ```bash
-pip install flask requests playwright
-playwright install chromium          # atau pakai Chrome yang sudah terpasang
-# sesuaikan CHROME di crawlers/*.py (mis. "C:/Program Files/Google/Chrome/Application/chrome.exe"),
-# atau hapus argumen executable_path agar memakai Chromium bawaan Playwright
-python target_site/server.py 5000    # terminal 1 (opsional, untuk uji manual)
-python crawlers/stealth_crawler.py http://127.0.0.1:5000
-REPEAT_FULL=3 python run_experiment.py   # eksperimen lengkap
+pip install -r requirements.txt
+playwright install chromium      # cadangan jika Google Chrome tidak ditemukan
+
+python run_experiment.py         # eksperimen lengkap (1x stealth_full, ~3 menit)
+# PowerShell, 3x stealth_full:   $env:REPEAT_FULL=3; python run_experiment.py
 ```
-Lihat skor/alasan deteksi per sesi di `http://127.0.0.1:5000/_stats`.
+Crawler otomatis memakai Google Chrome yang terpasang; set `CHROME_PATH` untuk memakai browser lain.
+
+Uji manual: jalankan `python target_site/server.py 5000`, lalu di terminal lain
+`python crawlers/stealth_crawler.py http://127.0.0.1:5000`. Skor/alasan deteksi per sesi: `http://127.0.0.1:5000/_stats`.
 
 ## Etika
 Hanya untuk diuji pada situs target lab ini atau situs yang memberi izin.

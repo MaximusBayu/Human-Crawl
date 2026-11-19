@@ -2,14 +2,14 @@
 import re
 import sys
 from playwright.sync_api import sync_playwright
+from browser import launch
 
-CHROME = "/usr/bin/google-chrome"
 
 
 def crawl(base, max_pages=15):
     got, blocked_at, reason = 0, None, ""
     with sync_playwright() as p:
-        b = p.chromium.launch(executable_path=CHROME, headless=True, args=["--no-sandbox"])
+        b = launch(p, headless=True, args=["--no-sandbox"])
         page = b.new_page()
         page.goto(base + "/")              # jalankan JS challenge di beranda
         page.wait_for_timeout(500)

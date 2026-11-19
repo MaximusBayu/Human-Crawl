@@ -24,8 +24,8 @@ import urllib.robotparser as robotparser
 from urllib.parse import urljoin, urlparse
 
 from playwright.sync_api import sync_playwright
+from browser import launch
 
-CHROME = "/usr/bin/google-chrome"
 
 
 # ---------------- M1: profil fingerprint konsisten ----------------
@@ -212,7 +212,7 @@ def crawl(base, max_pages=15, fingerprint=True, behaviour=True, seed=None):
         args = ["--no-sandbox"]
         if fingerprint:
             args.append("--disable-blink-features=AutomationControlled")
-        b = p.chromium.launch(executable_path=CHROME, headless=True, args=args)
+        b = launch(p, headless=True, args=args)
         ctx_kw = {}
         if fingerprint:
             ctx_kw = dict(user_agent=prof["ua"], viewport=prof["viewport"],

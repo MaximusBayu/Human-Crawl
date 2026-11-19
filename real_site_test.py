@@ -25,6 +25,7 @@ from playwright.sync_api import sync_playwright
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, "crawlers"))
 from stealth_crawler import HumanBehaviour, stealth_script  # noqa: E402
+from browser import launch  # noqa: E402
 
 SITES = [
     ("sannysoft", "https://bot.sannysoft.com/"),
@@ -82,10 +83,9 @@ def run(mode, chrome, headless):
         args = ["--no-sandbox"]
         if mode == "stealth":
             args.append("--disable-blink-features=AutomationControlled")
-        kw = {"headless": headless, "args": args}
         if chrome:
-            kw["executable_path"] = chrome
-        b = p.chromium.launch(**kw)
+            os.environ["CHROME_PATH"] = chrome
+        b = launch(p, headless=headless, args=args)
         major = b.version.split(".")[0]
         ctx_kw = {}
         prof = host_profile(major)
